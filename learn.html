@@ -1,0 +1,4199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2563eb">
+<meta name="description" content="A-LearnSST - Interactive Social Science e-book learning app">
+<title>A-LearnSST</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --red: #dc2626;
+    --green: #16a34a;
+    --orange: #f59e0b;
+    --purple: #7c3aed;
+    --bg: #f4f7fb;
+    --card: #ffffff;
+    --text: #172033;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+    --radius: 18px;
+}
+
+body.dark {
+    --bg: #0f172a;
+    --card: #182235;
+    --text: #f1f5f9;
+    --muted: #94a3b8;
+    --border: #334155;
+    --shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    min-height: 100vh;
+    padding-bottom: 80px;
+}
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+}
+
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo {
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    color: white;
+    display: grid;
+    place-items: center;
+    font-weight: 900;
+    font-size: 18px;
+}
+
+.brand-text h1 {
+    font-size: 19px;
+}
+
+.brand-text p {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.top-actions {
+    display: flex;
+    gap: 7px;
+}
+
+.icon-btn {
+    width: 38px;
+    height: 38px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--card);
+    color: var(--text);
+}
+
+main {
+    max-width: 1100px;
+    margin: auto;
+    padding: 18px 14px 30px;
+}
+
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+.hero {
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    color: white;
+    padding: 24px;
+    border-radius: 24px;
+    margin-bottom: 18px;
+    box-shadow: var(--shadow);
+}
+
+.hero h2 {
+    font-size: 27px;
+    margin-bottom: 5px;
+}
+
+.hero p {
+    opacity: 0.92;
+}
+
+.section-title {
+    margin: 22px 2px 11px;
+    font-size: 20px;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+}
+
+.feature-card {
+    min-height: 125px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.feature-icon {
+    font-size: 28px;
+}
+
+.feature-card h3 {
+    font-size: 15px;
+    margin-top: 7px;
+}
+
+.feature-card p {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.btn {
+    border: 0;
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-weight: 700;
+    background: var(--primary);
+    color: white;
+}
+
+.btn:hover {
+    background: var(--primary-dark);
+}
+
+.btn.secondary {
+    background: transparent;
+    color: var(--primary);
+    border: 1px solid var(--primary);
+}
+
+.btn.green {
+    background: var(--green);
+}
+
+.btn.red {
+    background: var(--red);
+}
+
+.btn.orange {
+    background: var(--orange);
+    color: #111827;
+}
+
+.btn.full {
+    width: 100%;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.stat {
+    text-align: center;
+    padding: 14px 8px;
+}
+
+.stat strong {
+    display: block;
+    font-size: 23px;
+}
+
+.stat span {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.progress-wrap {
+    margin-top: 9px;
+}
+
+.progress-bar {
+    height: 9px;
+    background: var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #2563eb, #7c3aed);
+    border-radius: inherit;
+    transition: width 0.3s ease;
+}
+
+.progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 5px;
+}
+
+.chapter-card {
+    margin-bottom: 12px;
+}
+
+.chapter-card h3 {
+    color: var(--red);
+    margin-bottom: 4px;
+}
+
+.chapter-card .subject {
+    color: var(--primary);
+    font-weight: bold;
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+
+.chapter-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 12px;
+}
+
+.reader {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.reader-head {
+    padding: 15px;
+    border-bottom: 1px solid var(--border);
+}
+
+.reader-head h2 {
+    color: var(--red);
+    font-size: 21px;
+}
+
+.reader-head p {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.reader-body {
+    padding: 18px;
+    min-height: 320px;
+}
+
+.reader-body h3 {
+    color: var(--red);
+    margin: 17px 0 7px;
+}
+
+.reader-body h4 {
+    color: var(--primary);
+    margin: 13px 0 5px;
+}
+
+.reader-body p {
+    margin-bottom: 9px;
+}
+
+.reader-body ul {
+    padding-left: 20px;
+    margin-bottom: 12px;
+}
+
+.keyword {
+    color: var(--green);
+    font-weight: 700;
+}
+
+.info-box {
+    background: rgba(37, 99, 235, 0.08);
+    border-left: 4px solid var(--primary);
+    padding: 12px;
+    border-radius: 10px;
+    margin: 12px 0;
+}
+
+.fact-box {
+    background: rgba(22, 163, 74, 0.09);
+    border-left: 4px solid var(--green);
+    padding: 12px;
+    border-radius: 10px;
+    margin: 12px 0;
+}
+
+.reader-controls {
+    display: flex;
+    gap: 8px;
+    padding: 13px;
+    border-top: 1px solid var(--border);
+}
+
+.reader-controls .btn {
+    flex: 1;
+}
+
+.small {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.search-box {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.input,
+textarea,
+select {
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    border-radius: 12px;
+    outline: none;
+}
+
+textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+.input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--primary);
+}
+
+.quiz-option {
+    width: 100%;
+    text-align: left;
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 13px;
+    border-radius: 12px;
+    margin: 7px 0;
+}
+
+.quiz-option:hover {
+    border-color: var(--primary);
+}
+
+.quiz-option.correct {
+    border-color: var(--green);
+    background: rgba(22, 163, 74, 0.12);
+}
+
+.quiz-option.wrong {
+    border-color: var(--red);
+    background: rgba(220, 38, 38, 0.12);
+}
+
+.quiz-progress {
+    margin-bottom: 15px;
+}
+
+.quiz-question {
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.result {
+    text-align: center;
+    padding: 22px;
+}
+
+.result-score {
+    font-size: 42px;
+    font-weight: 900;
+    color: var(--primary);
+}
+
+.lesson {
+    position: relative;
+}
+
+.lesson.locked {
+    opacity: 0.58;
+}
+
+.lesson.completed {
+    border-color: var(--green);
+}
+
+.lesson-status {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 6px;
+}
+
+.lesson-path {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.lesson::after {
+    content: "";
+    position: absolute;
+    left: 31px;
+    bottom: -10px;
+    height: 10px;
+    border-left: 2px dashed var(--border);
+}
+
+.lesson:last-child::after {
+    display: none;
+}
+
+.fact {
+    margin-bottom: 10px;
+}
+
+.fact-number {
+    color: var(--green);
+    font-weight: 900;
+}
+
+.glossary-item {
+    margin-bottom: 9px;
+}
+
+.glossary-item strong {
+    color: var(--primary);
+}
+
+.note-item {
+    margin-bottom: 10px;
+}
+
+.note-date {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 5px;
+}
+
+.achievement {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.badge-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: rgba(245, 158, 11, 0.15);
+    font-size: 23px;
+}
+
+.achievement.locked {
+    opacity: 0.45;
+}
+
+.profile-avatar {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    color: white;
+    display: grid;
+    place-items: center;
+    font-size: 27px;
+    font-weight: 900;
+    margin: 0 auto 10px;
+}
+
+.center {
+    text-align: center;
+}
+
+.empty {
+    text-align: center;
+    padding: 28px;
+    color: var(--muted);
+}
+
+.bottom-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 68px;
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    z-index: 200;
+}
+
+.nav-btn {
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    font-size: 10px;
+}
+
+.nav-btn span:first-child {
+    font-size: 20px;
+}
+
+.nav-btn.active {
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.toast {
+    position: fixed;
+    left: 50%;
+    bottom: 82px;
+    transform: translateX(-50%) translateY(20px);
+    background: #111827;
+    color: white;
+    padding: 11px 16px;
+    border-radius: 12px;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.25s;
+    z-index: 500;
+    max-width: 90%;
+    text-align: center;
+    font-size: 13px;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+@media (min-width: 700px) {
+    .card-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .feature-card {
+        min-height: 145px;
+    }
+
+    .bottom-nav {
+        max-width: 700px;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 1px solid var(--border);
+        border-bottom: 0;
+        border-radius: 18px 18px 0 0;
+    }
+}
+
+@media (min-width: 900px) {
+    main {
+        padding: 25px 20px 35px;
+    }
+
+    .hero {
+        padding: 30px;
+    }
+
+    .hero h2 {
+        font-size: 32px;
+    }
+
+    .card-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+    <div class="brand">
+        <div class="logo">A</div>
+        <div class="brand-text">
+            <h1>A-LearnSST</h1>
+            <p>Learn SST. Explore More. Remember Better.</p>
+        </div>
+    </div>
+
+    <div class="top-actions">
+        <button class="icon-btn" onclick="toggleDarkMode()" aria-label="Toggle dark mode">🌙</button>
+    </div>
+</header>
+
+<main>
+
+<!-- HOME -->
+<section id="home" class="page active">
+    <div class="hero">
+        <h2>Welcome to A-LearnSST 👋</h2>
+        <p>Your interactive Social Science e-book learning space.</p>
+    </div>
+
+    <div class="card stats">
+        <div class="stat">
+            <strong id="homeXP">0</strong>
+            <span>XP</span>
+        </div>
+        <div class="stat">
+            <strong id="homeLevel">1</strong>
+            <span>Level</span>
+        </div>
+        <div class="stat">
+            <strong id="homeStreak">0</strong>
+            <span>Day Streak</span>
+        </div>
+    </div>
+
+    <h2 class="section-title">Continue Learning</h2>
+
+    <div class="card">
+        <h3 id="continueTitle">Colonial Rule in India: A Turning Point</h3>
+        <p class="small" id="continueText">Start reading your latest chapter.</p>
+
+        <div class="progress-wrap">
+            <div class="progress-label">
+                <span>Reading Progress</span>
+                <span id="continuePercent">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div id="continueBar" class="progress-fill" style="width:0%"></div>
+            </div>
+        </div>
+
+        <br>
+        <button class="btn" onclick="continueReading()">Continue Reading</button>
+    </div>
+
+    <h2 class="section-title">Explore A-LearnSST</h2>
+
+    <div class="card-grid">
+        <div class="card feature-card" onclick="openPage('ebook')">
+            <div class="feature-icon">📖</div>
+            <div>
+                <h3>E-Book</h3>
+                <p>Read A-Social World chapter by chapter.</p>
+            </div>
+        </div>
+
+        <div class="card feature-card" onclick="openPage('quiz')">
+            <div class="feature-icon">🧠</div>
+            <div>
+                <h3>Quiz Maker</h3>
+                <p>Test your SST knowledge.</p>
+            </div>
+        </div>
+
+        <div class="card feature-card" onclick="openPage('summaries')">
+            <div class="feature-icon">📝</div>
+            <div>
+                <h3>Summaries</h3>
+                <p>Revise chapters quickly.</p>
+            </div>
+        </div>
+
+        <div class="card feature-card" onclick="openPage('publisher')">
+            <div class="feature-icon">🏫</div>
+            <div>
+                <h3>Publisher Notes</h3>
+                <p>Organised like a classroom notice space.</p>
+            </div>
+        </div>
+
+        <div class="card feature-card" onclick="openPage('learn')">
+            <div class="feature-icon">🚀</div>
+            <div>
+                <h3>SST Learning</h3>
+                <p>Small lessons, XP and progression.</p>
+            </div>
+        </div>
+
+        <div class="card feature-card" onclick="openPage('facts')">
+            <div class="feature-icon">💡</div>
+            <div>
+                <h3>10 Interesting Facts</h3>
+                <p>Discover memorable SST facts.</p>
+            </div>
+        </div>
+
+        <div class="card feature-card" onclick="openPage('map')">
+            <div class="feature-icon">🗺️</div>
+            <div>
+                <h3>Map Lab</h3>
+                <p>Practise important map locations.</p>
+            </div>
+        </div>
+
+        <div class="card feature-card" onclick="openPage('quick')">
+            <div class="feature-icon">⚡</div>
+            <div>
+                <h3>Quick Revision</h3>
+                <p>Fast revision before tests.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- EBOOK -->
+<section id="ebook" class="page">
+    <h2 class="section-title">📖 A-Social World E-Book</h2>
+    <p class="small">Choose a chapter to start reading.</p>
+
+    <div id="chapterList"></div>
+
+    <div id="readerArea"></div>
+</section>
+
+<!-- SUMMARIES -->
+<section id="summaries" class="page">
+    <h2 class="section-title">📝 Chapter Summaries</h2>
+    <div id="summaryList"></div>
+</section>
+
+<!-- PUBLISHER NOTES -->
+<section id="publisher" class="page">
+    <h2 class="section-title">🏫 Publisher Notes</h2>
+
+    <div class="card">
+        <h3>📌 A-Educations</h3>
+        <p class="small">Publisher / Creator Notes</p>
+    </div>
+
+    <br>
+
+    <div class="card">
+        <h3>📢 Welcome to A-LearnSST</h3>
+        <p>
+            A-LearnSST is the interactive learning companion for
+            <strong>A-Social World</strong>.
+        </p>
+        <br>
+        <p>
+            Read, revise, practise quizzes, explore facts and build
+            your SST learning progress.
+        </p>
+    </div>
+
+    <br>
+
+    <div class="card">
+        <h3>📚 Current Book</h3>
+        <p><strong>A-Social World</strong></p>
+        <p class="small">
+            Geography • History • Civics • Real World India
+        </p>
+    </div>
+
+    <br>
+
+    <div class="card">
+        <h3>⭐ Study Reminder</h3>
+        <p>
+            Complete small lessons regularly instead of trying to learn
+            everything at once.
+        </p>
+    </div>
+</section>
+
+<!-- LEARN -->
+<section id="learn" class="page">
+    <h2 class="section-title">🚀 SST Learning Journey</h2>
+
+    <div class="card">
+        <h3>Your Progress</h3>
+
+        <div class="progress-wrap">
+            <div class="progress-label">
+                <span>Overall Learning</span>
+                <span id="learnOverall">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div id="learnOverallBar" class="progress-fill" style="width:0%"></div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="section-title">🌍 Geography</h2>
+    <div id="geoLessons" class="lesson-path"></div>
+
+    <h2 class="section-title">🏛️ History</h2>
+    <div id="historyLessons" class="lesson-path"></div>
+
+    <h2 class="section-title">⚖️ Civics</h2>
+    <div id="civicsLessons" class="lesson-path"></div>
+
+    <h2 class="section-title">💰 Economics</h2>
+    <div id="economicsLessons" class="lesson-path"></div>
+</section>
+
+<!-- FACTS -->
+<section id="facts" class="page">
+    <h2 class="section-title">💡 10 Interesting Facts</h2>
+
+    <select id="factsChapter" class="input" onchange="renderFacts()">
+        <option value="ch1">Chapter 1 — Geography</option>
+        <option value="ch2">Chapter 2 — History</option>
+        <option value="ch3">Chapter 3 — Civics</option>
+    </select>
+
+    <br><br>
+
+    <div id="factsList"></div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz" class="page">
+    <h2 class="section-title">🧠 Quiz Maker</h2>
+
+    <div id="quizSetup" class="card">
+        <h3>Create Your Quiz</h3>
+        <br>
+
+        <label class="small">Choose chapter</label>
+        <select id="quizChapter" class="input">
+            <option value="all">All Chapters</option>
+            <option value="ch1">Chapter 1 — Geography</option>
+            <option value="ch2">Chapter 2 — History</option>
+            <option value="ch3">Chapter 3 — Civics</option>
+        </select>
+
+        <br><br>
+
+        <label class="small">Number of questions</label>
+        <select id="quizCount" class="input">
+            <option value="5">5 Questions</option>
+            <option value="10">10 Questions</option>
+            <option value="15">15 Questions</option>
+            <option value="20">20 Questions</option>
+        </select>
+
+        <br><br>
+
+        <label class="small">Question type</label>
+        <select id="quizType" class="input">
+            <option value="mixed">Mixed</option>
+            <option value="mcq">MCQ</option>
+            <option value="tf">True / False</option>
+            <option value="fill">Fill in the Blank</option>
+        </select>
+
+        <br><br>
+
+        <button class="btn full" onclick="startQuiz()">Start Quiz</button>
+    </div>
+
+    <div id="quizGame" style="display:none"></div>
+</section>
+
+<!-- MAP -->
+<section id="map" class="page">
+    <h2 class="section-title">🗺️ Map Lab</h2>
+
+    <div class="card">
+        <h3>India Map Practice</h3>
+        <p class="small">
+            This v1.1 Map Lab uses knowledge questions.
+            A full interactive India map can be added in a future version.
+        </p>
+    </div>
+
+    <br>
+
+    <div id="mapQuestion"></div>
+</section>
+
+<!-- QUICK REVISION -->
+<section id="quick" class="page">
+    <h2 class="section-title">⚡ Quick Revision</h2>
+
+    <div class="card">
+        <h3>Chapter 1 — Geography</h3>
+        <p>
+            India is located in South Asia. Its major physical divisions
+            include the Himalayas, Northern Plains, Peninsular Plateau,
+            Indian Desert, Coastal Plains and Islands.
+        </p>
+    </div>
+
+    <br>
+
+    <div class="card">
+        <h3>Chapter 2 — History</h3>
+        <p>
+            European trading companies came to India for trade.
+            The English East India Company gradually increased its
+            political and economic control.
+        </p>
+    </div>
+
+    <br>
+
+    <div class="card">
+        <h3>Chapter 3 — Civics</h3>
+        <p>
+            Democracy involves people participating in government.
+            The Indian Parliament consists of the President,
+            Lok Sabha and Rajya Sabha.
+        </p>
+    </div>
+</section>
+
+<!-- GLOSSARY -->
+<section id="glossary" class="page">
+    <h2 class="section-title">📚 SST Glossary</h2>
+
+    <input
+        id="glossarySearch"
+        class="input"
+        placeholder="Search a term..."
+        oninput="renderGlossary()"
+    >
+
+    <br><br>
+
+    <div id="glossaryList"></div>
+</section>
+
+<!-- SEARCH -->
+<section id="search" class="page">
+    <h2 class="section-title">🔎 Smart Search</h2>
+
+    <div class="search-box">
+        <input id="searchInput" class="input" placeholder="Search A-LearnSST..." oninput="runSearch()">
+    </div>
+
+    <div id="searchResults"></div>
+</section>
+
+<!-- BOOKMARKS -->
+<section id="bookmarks" class="page">
+    <h2 class="section-title">🔖 My Bookmarks</h2>
+    <div id="bookmarkList"></div>
+</section>
+
+<!-- NOTES -->
+<section id="notes" class="page">
+    <h2 class="section-title">🗒️ Personal Notes</h2>
+
+    <div class="card">
+        <textarea id="noteInput" placeholder="Write your SST note here..."></textarea>
+        <br><br>
+        <button class="btn full" onclick="savePersonalNote()">Save Note</button>
+    </div>
+
+    <br>
+
+    <div id="notesList"></div>
+</section>
+
+<!-- PROGRESS -->
+<section id="progress" class="page">
+    <h2 class="section-title">📊 My Progress</h2>
+
+    <div class="card">
+        <h3>XP & Level</h3>
+        <p id="progressXPText"></p>
+
+        <div class="progress-wrap">
+            <div class="progress-label">
+                <span>Level Progress</span>
+                <span id="levelProgressText"></span>
+            </div>
+            <div class="progress-bar">
+                <div id="levelProgressBar" class="progress-fill"></div>
+            </div>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="card">
+        <h3>📖 Reading Progress</h3>
+        <div id="readingProgressList"></div>
+    </div>
+
+    <br>
+
+    <div class="card">
+        <h3>🧠 Quiz Attempts</h3>
+        <p id="quizAttemptsText"></p>
+    </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section id="achievements" class="page">
+    <h2 class="section-title">🏆 Achievements</h2>
+    <div id="achievementList"></div>
+</section>
+
+<!-- PROFILE -->
+<section id="profile" class="page">
+    <h2 class="section-title">👤 Profile</h2>
+
+    <div class="card center">
+        <div id="profileAvatar" class="profile-avatar">A</div>
+
+        <input id="profileName" class="input" placeholder="Your name">
+
+        <br><br>
+
+        <input id="profileClass" class="input" placeholder="Class">
+
+        <br><br>
+
+        <button class="btn full" onclick="saveProfile()">Save Profile</button>
+    </div>
+
+    <br>
+
+    <div class="card">
+        <h3>App Data</h3>
+        <p class="small">
+            Your progress is saved locally on this device.
+        </p>
+
+        <br>
+
+        <button class="btn red full" onclick="resetProgress()">
+            Reset All Progress
+        </button>
+    </div>
+</section>
+
+</main>
+
+<nav class="bottom-nav">
+    <button class="nav-btn active" data-page="home" onclick="openPage('home')">
+        <span>🏠</span>
+        <span>Home</span>
+    </button>
+
+    <button class="nav-btn" data-page="ebook" onclick="openPage('ebook')">
+        <span>📖</span>
+        <span>E-Book</span>
+    </button>
+
+    <button class="nav-btn" data-page="quiz" onclick="openPage('quiz')">
+        <span>🧠</span>
+        <span>Quiz</span>
+    </button>
+
+    <button class="nav-btn" data-page="learn" onclick="openPage('learn')">
+        <span>🚀</span>
+        <span>Learn</span>
+    </button>
+
+    <button class="nav-btn" data-page="profile" onclick="openPage('profile')">
+        <span>👤</span>
+        <span>Profile</span>
+    </button>
+</nav>
+
+<div id="toast" class="toast"></div>
+
+<script>
+"use strict";
+
+/* =========================================================
+   A-LEARNSST v1.1
+   Single-file offline-first SST learning application
+   ========================================================= */
+
+/* -------------------------
+   DEFAULT STATE
+------------------------- */
+
+const DEFAULT_STATE = {
+    xp: 0,
+    level: 1,
+    streak: 0,
+    quizzes: 0,
+    completedLessons: [],
+    completedChapters: [],
+    bookmarks: [],
+    notes: [],
+    reading: {},
+    lastChapter: "ch2",
+    lastPage: 0,
+    profile: {
+        name: "",
+        className: ""
+    },
+    darkMode: false,
+    mapCompleted: false
+};
+
+let state = loadState();
+
+let currentPage = "home";
+let currentChapter = null;
+let currentReaderPage = 0;
+
+let quizSession = {
+    active: false,
+    questions: [],
+    index: 0,
+    score: 0,
+    answered: false,
+    selectedAnswer: null
+};
+
+/* -------------------------
+   CHAPTER DATA
+------------------------- */
+
+const chapters = {
+    ch1: {
+        id: "ch1",
+        number: 1,
+        subject: "Geography",
+        title: "Understanding India: Our Land And People",
+
+        pages: [
+            {
+                title: "Understanding India",
+                content: `
+                    <p>
+                        India is a vast country located in <span class="keyword">South Asia</span>.
+                        Its location, physical features and people make it a diverse and fascinating country.
+                    </p>
+
+                    <h3>India and Its Location</h3>
+                    <p>
+                        India lies in the Northern and Eastern Hemispheres.
+                        The Indian Ocean lies to its south, while the Arabian Sea
+                        and Bay of Bengal lie to its southwest and southeast.
+                    </p>
+
+                    <div class="info-box">
+                        <strong>Remember:</strong>
+                        India is part of the Asian continent and occupies an important
+                        position in the Indian Ocean region.
+                    </div>
+
+                    <h3>Our Land and People</h3>
+                    <p>
+                        India has mountains, plains, plateaus, deserts, coastal regions
+                        and islands. Its people speak many languages and follow many
+                        cultural traditions.
+                    </p>
+                `
+            },
+
+            {
+                title: "Physical Features of India",
+                content: `
+                    <h3>Major Physical Divisions</h3>
+
+                    <p>India can be divided into several major physical regions:</p>
+
+                    <ul>
+                        <li><span class="keyword">The Himalayas</span></li>
+                        <li><span class="keyword">The Northern Plains</span></li>
+                        <li><span class="keyword">The Peninsular Plateau</span></li>
+                        <li><span class="keyword">The Indian Desert</span></li>
+                        <li><span class="keyword">The Coastal Plains</span></li>
+                        <li><span class="keyword">The Islands</span></li>
+                    </ul>
+
+                    <h4>The Himalayas</h4>
+                    <p>
+                        The Himalayas form a high mountain system in northern India.
+                        They influence climate and are the source of many important rivers.
+                    </p>
+
+                    <h4>The Northern Plains</h4>
+                    <p>
+                        These plains have been formed largely by the deposition of
+                        sediments brought by rivers.
+                    </p>
+
+                    <div class="fact-box">
+                        <strong>Did You Know?</strong>
+                        The Himalayas are among the youngest major fold mountain systems
+                        in the world.
+                    </div>
+                `
+            },
+
+            {
+                title: "People, Rivers and Coasts",
+                content: `
+                    <h3>Rivers</h3>
+                    <p>
+                        Rivers are important for agriculture, drinking water,
+                        transport and many other human activities.
+                    </p>
+
+                    <h3>Coasts and Islands</h3>
+                    <p>
+                        India has a long coastline along the Arabian Sea,
+                        Bay of Bengal and Indian Ocean region.
+                        India also includes island groups such as the
+                        <span class="keyword">Andaman and Nicobar Islands</span>
+                        and <span class="keyword">Lakshadweep</span>.
+                    </p>
+
+                    <h3>The People of India</h3>
+                    <p>
+                        India is known for its cultural, linguistic and regional diversity.
+                        Different communities contribute to India's rich cultural heritage.
+                    </p>
+
+                    <div class="info-box">
+                        <strong>Learning Idea:</strong>
+                        Geography is not only about landforms. It also helps us understand
+                        how people live and interact with their environment.
+                    </div>
+                `
+            }
+        ],
+
+        summary: `
+            India is a diverse country in South Asia. Its major physical divisions
+            include the Himalayas, Northern Plains, Peninsular Plateau, Indian Desert,
+            Coastal Plains and Islands. Rivers, climate and physical features influence
+            human life. India's people also show great linguistic and cultural diversity.
+        `
+    },
+
+    ch2: {
+        id: "ch2",
+        number: 2,
+        subject: "History",
+        title: "Colonial Rule in India: A Turning Point",
+
+        pages: [
+            {
+                title: "The Beginning of Colonial Rule",
+                content: `
+                    <p>
+                        From the late fifteenth century onwards, several European trading
+                        companies came to India in search of trade opportunities.
+                    </p>
+
+                    <h3>European Trading Companies</h3>
+                    <p>
+                        The <span class="keyword">Portuguese</span>,
+                        <span class="keyword">Dutch</span>,
+                        <span class="keyword">English</span> and
+                        <span class="keyword">French</span> established trading
+                        connections in different parts of India.
+                    </p>
+
+                    <h3>The English East India Company</h3>
+                    <p>
+                        The English East India Company received its royal charter in
+                        <span class="keyword">1600</span>. It was initially formed
+                        mainly for overseas trade.
+                    </p>
+
+                    <div class="fact-box">
+                        <strong>Important:</strong>
+                        The Company's role gradually changed from trading to acquiring
+                        political and territorial power.
+                    </div>
+                `
+            },
+
+            {
+                title: "From Trade to Political Power",
+                content: `
+                    <h3>Factories and Trading Posts</h3>
+                    <p>
+                        European companies established trading centres, often called
+                        <span class="keyword">factories</span>, where goods could be
+                        stored and trade could be organised.
+                    </p>
+
+                    <h3>Alliances and Diplomacy</h3>
+                    <p>
+                        European companies interacted with Indian rulers through
+                        agreements, negotiations and alliances. They also used military
+                        power when conflicts arose.
+                    </p>
+
+                    <h3>A Changing Balance of Power</h3>
+                    <p>
+                        The English East India Company gradually became more powerful.
+                        Its military, political and economic activities helped it expand
+                        its influence.
+                    </p>
+                `
+            },
+
+            {
+                title: "Plassey and Buxar",
+                content: `
+                    <h3>Battle of Plassey — 1757</h3>
+                    <p>
+                        The Battle of Plassey was fought in <span class="keyword">1757</span>
+                        in Bengal. The Company's victory strengthened its political
+                        influence in the region.
+                    </p>
+
+                    <h3>Battle of Buxar — 1764</h3>
+                    <p>
+                        The Battle of Buxar was fought in <span class="keyword">1764</span>.
+                        The Company's victory further strengthened its position in
+                        eastern India.
+                    </p>
+
+                    <div class="info-box">
+                        <strong>Remember the sequence:</strong>
+                        Plassey — 1757 → Buxar — 1764
+                    </div>
+                `
+            },
+
+            {
+                title: "Economic and Social Effects",
+                content: `
+                    <h3>Economic Changes</h3>
+                    <p>
+                        Colonial policies affected agriculture, trade, industries
+                        and the collection of revenue.
+                    </p>
+
+                    <h3>Changes in Society</h3>
+                    <p>
+                        Colonial rule also influenced education, administration,
+                        law and different aspects of everyday life.
+                    </p>
+
+                    <h3>Impact on Indian Lives</h3>
+                    <p>
+                        The effects of colonial rule were experienced differently
+                        by different groups, including farmers, artisans, traders
+                        and rulers.
+                    </p>
+
+                    <div class="fact-box">
+                        <strong>Key Idea:</strong>
+                        Colonialism involved political control as well as economic
+                        and administrative changes.
+                    </div>
+                `
+            },
+
+            {
+                title: "Chapter Review",
+                content: `
+                    <h3>Key Points</h3>
+
+                    <ul>
+                        <li>European companies came to India for trade.</li>
+                        <li>The English East India Company was established under a royal charter in 1600.</li>
+                        <li>Trading centres and factories supported commercial activity.</li>
+                        <li>The Company gradually increased its political influence.</li>
+                        <li>The Battles of Plassey and Buxar were important events in this expansion.</li>
+                        <li>Colonial policies affected India's economy and society.</li>
+                    </ul>
+
+                    <div class="info-box">
+                        <strong>Revision Challenge:</strong>
+                        Can you explain how a trading company gradually became
+                        a political power?
+                    </div>
+                `
+            }
+        ],
+
+        summary: `
+            European trading companies came to India mainly for trade.
+            The English East India Company received its royal charter in 1600.
+            It established trading centres and gradually increased its political,
+            military and economic influence. The Battles of Plassey in 1757 and
+            Buxar in 1764 were important steps in the Company's expansion.
+            Colonial policies later affected India's economy, society and administration.
+        `
+    },
+
+    ch3: {
+        id: "ch3",
+        number: 3,
+        subject: "Civics",
+        title: "Governance And Democracy",
+
+        pages: [
+            {
+                title: "What is Democracy?",
+                content: `
+                    <p>
+                        <span class="keyword">Democracy</span> is a system of government
+                        in which people participate in choosing their representatives.
+                    </p>
+
+                    <h3>People and Government</h3>
+                    <p>
+                        In a democracy, citizens have important rights and responsibilities.
+                        Elections allow people to choose representatives.
+                    </p>
+
+                    <div class="info-box">
+                        <strong>Key Idea:</strong>
+                        Democracy is based on participation, representation and
+                        constitutional principles.
+                    </div>
+                `
+            },
+
+            {
+                title: "The Parliament of India",
+                content: `
+                    <h3>Three Components</h3>
+
+                    <p>
+                        The Parliament of India consists of:
+                    </p>
+
+                    <ul>
+                        <li>The President</li>
+                        <li>The Lok Sabha</li>
+                        <li>The Rajya Sabha</li>
+                    </ul>
+
+                    <h3>Lok Sabha</h3>
+                    <p>
+                        The Lok Sabha is the House of the People.
+                        Its members are directly elected by citizens.
+                    </p>
+
+                    <h3>Rajya Sabha</h3>
+                    <p>
+                        The Rajya Sabha is the Council of States.
+                        It is a continuing chamber, and its members have
+                        a term of six years.
+                    </p>
+                `
+            },
+
+            {
+                title: "Legislature and Executive",
+                content: `
+                    <h3>Legislature</h3>
+                    <p>
+                        The legislature is the law-making branch of government.
+                        In India, Parliament is the Union legislature.
+                    </p>
+
+                    <h3>Executive</h3>
+                    <p>
+                        The executive is responsible for implementing laws
+                        and carrying out government administration.
+                    </p>
+
+                    <div class="fact-box">
+                        <strong>Remember:</strong>
+                        Legislature makes laws; executive implements laws
+                        and administers government.
+                    </div>
+                `
+            }
+        ],
+
+        summary: `
+            Democracy allows people to participate in choosing representatives.
+            The Parliament of India consists of the President, Lok Sabha and Rajya Sabha.
+            The legislature makes laws, while the executive implements laws and
+            carries out administration.
+        `
+    }
+};
+
+/* -------------------------
+   FACTS
+------------------------- */
+
+const facts = {
+    ch1: [
+        "India is located in South Asia.",
+        "The Himalayas lie in the northern part of India.",
+        "The Northern Plains have been formed largely by river deposits.",
+        "India has both mainland and island regions.",
+        "The Indian Ocean lies to the south of India.",
+        "The Arabian Sea lies to the west of India.",
+        "The Bay of Bengal lies to the east of India.",
+        "Lakshadweep is an island group of India.",
+        "The Andaman and Nicobar Islands lie in the Bay of Bengal region.",
+        "India has great physical and cultural diversity."
+    ],
+
+    ch2: [
+        "The English East India Company received its charter in 1600.",
+        "European companies came to India mainly for trade.",
+        "Portuguese, Dutch, English and French companies operated in India.",
+        "Trading centres were established in different parts of India.",
+        "Factories were used as trading establishments.",
+        "The Battle of Plassey took place in 1757.",
+        "The Battle of Buxar took place in 1764.",
+        "The Company's political influence grew over time.",
+        "Colonial policies affected agriculture and trade.",
+        "Colonial rule affected many aspects of Indian society and administration."
+    ],
+
+    ch3: [
+        "India is a democratic republic.",
+        "Citizens participate in democracy through elections.",
+        "The Parliament of India has three components.",
+        "The President is a component of Parliament.",
+        "The Lok Sabha is called the House of the People.",
+        "The Rajya Sabha is called the Council of States.",
+        "Rajya Sabha is a continuing chamber.",
+        "A Rajya Sabha member has a six-year term.",
+        "Parliament is the Union legislature.",
+        "The executive implements laws and carries out administration."
+    ]
+};
+
+/* -------------------------
+   QUIZ DATA
+------------------------- */
+
+const quizQuestions = [
+
+    {
+        id: "q1",
+        chapter: "ch1",
+        type: "mcq",
+        question: "India is located in which part of Asia?",
+        options: ["East Asia", "South Asia", "Central Asia", "West Asia"],
+        answer: "South Asia",
+        explanation: "India is located in South Asia."
+    },
+
+    {
+        id: "q2",
+        chapter: "ch1",
+        type: "mcq",
+        question: "Which mountain system lies in northern India?",
+        options: ["Andes", "Alps", "Himalayas", "Rockies"],
+        answer: "Himalayas",
+        explanation: "The Himalayas form a major mountain system in northern India."
+    },
+
+    {
+        id: "q3",
+        chapter: "ch1",
+        type: "tf",
+        question: "India has both mainland and island regions.",
+        options: ["True", "False"],
+        answer: "True",
+        explanation: "India includes mainland territory and island groups."
+    },
+
+    {
+        id: "q4",
+        chapter: "ch1",
+        type: "mcq",
+        question: "Which sea lies to the west of India?",
+        options: ["Arabian Sea", "Red Sea", "Mediterranean Sea", "Caspian Sea"],
+        answer: "Arabian Sea",
+        explanation: "The Arabian Sea lies to the west of India."
+    },
+
+    {
+        id: "q5",
+        chapter: "ch1",
+        type: "fill",
+        question: "The ______ lies to the south of India.",
+        answer: "Indian Ocean",
+        explanation: "The Indian Ocean lies south of India."
+    },
+
+    {
+        id: "q6",
+        chapter: "ch2",
+        type: "mcq",
+        question: "When did the English East India Company receive its royal charter?",
+        options: ["1498", "1600", "1757", "1857"],
+        answer: "1600",
+        explanation: "The English East India Company received its royal charter in 1600."
+    },
+
+    {
+        id: "q7",
+        chapter: "ch2",
+        type: "mcq",
+        question: "Which battle was fought in 1757?",
+        options: ["Battle of Buxar", "Battle of Plassey", "Battle of Panipat", "Battle of Haldighati"],
+        answer: "Battle of Plassey",
+        explanation: "The Battle of Plassey took place in 1757."
+    },
+
+    {
+        id: "q8",
+        chapter: "ch2",
+        type: "mcq",
+        question: "Which battle took place in 1764?",
+        options: ["Plassey", "Buxar", "Haldighati", "Talikota"],
+        answer: "Buxar",
+        explanation: "The Battle of Buxar took place in 1764."
+    },
+
+    {
+        id: "q9",
+        chapter: "ch2",
+        type: "tf",
+        question: "European trading companies came to India partly in search of trade opportunities.",
+        options: ["True", "False"],
+        answer: "True",
+        explanation: "Trade was a major reason for European companies coming to India."
+    },
+
+    {
+        id: "q10",
+        chapter: "ch2",
+        type: "fill",
+        question: "The English East India Company received its royal charter in ______.",
+        answer: "1600",
+        explanation: "The Company's royal charter dates to 1600."
+    },
+
+    {
+        id: "q11",
+        chapter: "ch2",
+        type: "mcq",
+        question: "What did European companies establish to organise trading activities?",
+        options: ["Factories", "Parliaments", "Universities", "Courts"],
+        answer: "Factories",
+        explanation: "Factories were trading establishments used by European companies."
+    },
+
+    {
+        id: "q12",
+        chapter: "ch2",
+        type: "tf",
+        question: "The Company's influence remained limited only to trade throughout its history.",
+        options: ["True", "False"],
+        answer: "False",
+        explanation: "The Company gradually expanded its political and territorial influence."
+    },
+
+    {
+        id: "q13",
+        chapter: "ch3",
+        type: "mcq",
+        question: "Which is the House of the People?",
+        options: ["Rajya Sabha", "Lok Sabha", "Vidhan Sabha", "Supreme Court"],
+        answer: "Lok Sabha",
+        explanation: "Lok Sabha is the House of the People."
+    },
+
+    {
+        id: "q14",
+        chapter: "ch3",
+        type: "mcq",
+        question: "Which is the Council of States?",
+        options: ["Lok Sabha", "Rajya Sabha", "Vidhan Parishad", "Cabinet"],
+        answer: "Rajya Sabha",
+        explanation: "Rajya Sabha is the Council of States."
+    },
+
+    {
+        id: "q15",
+        chapter: "ch3",
+        type: "mcq",
+        question: "How long is the term of a Rajya Sabha member?",
+        options: ["4 years", "5 years", "6 years", "7 years"],
+        answer: "6 years",
+        explanation: "A Rajya Sabha member has a six-year term."
+    },
+
+    {
+        id: "q16",
+        chapter: "ch3",
+        type: "tf",
+        question: "The Parliament of India consists of the President, Lok Sabha and Rajya Sabha.",
+        options: ["True", "False"],
+        answer: "True",
+        explanation: "These are the three components of the Parliament of India."
+    },
+
+    {
+        id: "q17",
+        chapter: "ch3",
+        type: "mcq",
+        question: "Which branch makes laws?",
+        options: ["Executive", "Legislature", "Judiciary", "Media"],
+        answer: "Legislature",
+        explanation: "The legislature is the law-making branch."
+    },
+
+    {
+        id: "q18",
+        chapter: "ch3",
+        type: "tf",
+        question: "The executive is responsible for implementing laws and administration.",
+        options: ["True", "False"],
+        answer: "True",
+        explanation: "The executive implements laws and carries out administration."
+    },
+
+    {
+        id: "q19",
+        chapter: "ch3",
+        type: "fill",
+        question: "The Indian Parliament is the Union ______.",
+        answer: "legislature",
+        explanation: "Parliament is the Union legislature."
+    },
+
+    {
+        id: "q20",
+        chapter: "ch1",
+        type: "mcq",
+        question: "Which island group lies in the Arabian Sea?",
+        options: ["Lakshadweep", "Andaman and Nicobar", "Seychelles", "Maldives"],
+        answer: "Lakshadweep",
+        explanation: "Lakshadweep is an Indian island group in the Arabian Sea."
+    },
+
+    {
+        id: "q21",
+        chapter: "ch2",
+        type: "mcq",
+        question: "Which European companies are mentioned as having trading connections in India?",
+        options: [
+            "Portuguese, Dutch, English and French",
+            "Spanish, Russian, Chinese and Japanese",
+            "American, Canadian, Australian and German",
+            "Greek, Roman, Persian and Arab"
+        ],
+        answer: "Portuguese, Dutch, English and French",
+        explanation: "These four European powers are discussed in the chapter."
+    },
+
+    {
+        id: "q22",
+        chapter: "ch3",
+        type: "mcq",
+        question: "Democracy allows citizens to participate in choosing their ______.",
+        options: ["Mountains", "Representatives", "Rivers", "Factories"],
+        answer: "Representatives",
+        explanation: "Citizens participate in democracy by choosing representatives."
+    }
+];
+
+/* -------------------------
+   LEARNING JOURNEY
+------------------------- */
+
+const lessons = {
+    geography: [
+        {
+            id: "geo1",
+            title: "India and Its Location",
+            description: "Learn India's position and surrounding water bodies.",
+            xp: 20
+        },
+        {
+            id: "geo2",
+            title: "Physical Features",
+            description: "Explore India's major physical divisions.",
+            xp: 20
+        },
+        {
+            id: "geo3",
+            title: "People, Rivers and Coasts",
+            description: "Connect geography with human life.",
+            xp: 25
+        }
+    ],
+
+    history: [
+        {
+            id: "hist1",
+            title: "European Trading Companies",
+            description: "Discover why European companies came to India.",
+            xp: 20
+        },
+        {
+            id: "hist2",
+            title: "Trade to Political Power",
+            description: "Understand how the Company expanded its influence.",
+            xp: 20
+        },
+        {
+            id: "hist3",
+            title: "Plassey and Buxar",
+            description: "Learn about two important battles.",
+            xp: 25
+        },
+        {
+            id: "hist4",
+            title: "Colonial Effects",
+            description: "Study economic and social effects.",
+            xp: 25
+        }
+    ],
+
+    civics: [
+        {
+            id: "civ1",
+            title: "Understanding Democracy",
+            description: "Learn the basic idea of democracy.",
+            xp: 20
+        },
+        {
+            id: "civ2",
+            title: "Parliament of India",
+            description: "Explore the President, Lok Sabha and Rajya Sabha.",
+            xp: 25
+        },
+        {
+            id: "civ3",
+            title: "Legislature and Executive",
+            description: "Understand their different roles.",
+            xp: 25
+        }
+    ],
+
+    economics: [
+        {
+            id: "eco1",
+            title: "Introduction to Economics",
+            description: "Explore basic economic ideas.",
+            xp: 20
+        },
+        {
+            id: "eco2",
+            title: "Resources and Needs",
+            description: "Understand resources and human needs.",
+            xp: 20
+        }
+    ]
+};
+
+/* -------------------------
+   GLOSSARY
+------------------------- */
+
+const glossary = [
+    ["Colonial Rule", "Political and administrative control exercised by a colonial power over another region."],
+    ["East India Company", "An English trading company that gradually acquired political power in parts of India."],
+    ["Factory", "A trading establishment used by European companies."],
+    ["Alliance", "An agreement between groups or powers to cooperate."],
+    ["Diplomacy", "The practice of managing relations through negotiation."],
+    ["Legislature", "The branch of government responsible for making laws."],
+    ["Democracy", "A system of government in which people participate in choosing representatives."],
+    ["Himalayas", "A major mountain system in northern India and neighbouring regions."],
+    ["Plassey", "The site of the important 1757 battle in Bengal."],
+    ["Buxar", "The site of the important 1764 battle."],
+    ["Lok Sabha", "The House of the People."],
+    ["Rajya Sabha", "The Council of States."],
+    ["Executive", "The branch responsible for implementing laws and administration."]
+];
+
+/* -------------------------
+   ACHIEVEMENTS
+------------------------- */
+
+const achievements = [
+    {
+        id: "first-read",
+        icon: "📖",
+        title: "First Page",
+        description: "Read your first e-book page.",
+        check: () => Object.keys(state.reading).length > 0
+    },
+    {
+        id: "first-quiz",
+        icon: "🧠",
+        title: "Quiz Starter",
+        description: "Complete your first quiz.",
+        check: () => state.quizzes >= 1
+    },
+    {
+        id: "xp100",
+        icon: "⭐",
+        title: "100 XP",
+        description: "Earn 100 XP.",
+        check: () => state.xp >= 100
+    },
+    {
+        id: "lesson3",
+        icon: "🚀",
+        title: "Learning Explorer",
+        description: "Complete 3 learning lessons.",
+        check: () => state.completedLessons.length >= 3
+    },
+    {
+        id: "chapter",
+        icon: "🏆",
+        title: "Chapter Complete",
+        description: "Complete an e-book chapter.",
+        check: () => state.completedChapters.length >= 1
+    },
+    {
+        id: "map",
+        icon: "🗺️",
+        title: "Map Explorer",
+        description: "Complete a Map Lab challenge.",
+        check: () => state.mapCompleted
+    }
+];
+
+/* =========================================================
+   STATE MANAGEMENT
+   ========================================================= */
+
+function safeClone(obj) {
+    return JSON.parse(JSON.stringify(obj));
+}
+
+function loadState() {
+    const raw = localStorage.getItem("aLearnSSTState");
+
+    if (!raw) {
+        return safeClone(DEFAULT_STATE);
+    }
+
+    try {
+        const parsed = JSON.parse(raw);
+
+        return {
+            ...safeClone(DEFAULT_STATE),
+            ...parsed,
+            profile: {
+                ...safeClone(DEFAULT_STATE.profile),
+                ...(parsed.profile || {})
+            },
+            completedLessons: Array.isArray(parsed.completedLessons)
+                ? parsed.completedLessons
+                : [],
+            completedChapters: Array.isArray(parsed.completedChapters)
+                ? parsed.completedChapters
+                : [],
+            bookmarks: Array.isArray(parsed.bookmarks)
+                ? parsed.bookmarks
+                : [],
+            notes: Array.isArray(parsed.notes)
+                ? parsed.notes
+                : [],
+            reading: parsed.reading && typeof parsed.reading === "object"
+                ? parsed.reading
+                : {}
+        };
+    } catch (error) {
+        localStorage.removeItem("aLearnSSTState");
+        return safeClone(DEFAULT_STATE);
+    }
+}
+
+function saveState() {
+    try {
+        localStorage.setItem("aLearnSSTState", JSON.stringify(state));
+    } catch (error) {
+        showToast("Could not save data on this device.");
+    }
+}
+
+/* =========================================================
+   GENERAL UI
+   ========================================================= */
+
+function openPage(pageId) {
+    const page = document.getElementById(pageId);
+
+    if (!page) {
+        return;
+    }
+
+    document.querySelectorAll(".page").forEach(pageElement => {
+        pageElement.classList.remove("active");
+    });
+
+    page.classList.add("active");
+    currentPage = pageId;
+
+    document.querySelectorAll(".nav-btn").forEach(button => {
+        button.classList.toggle(
+            "active",
+            button.dataset.page === pageId
+        );
+    });
+
+    renderPage(pageId);
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+function renderPage(pageId) {
+    if (pageId === "home") {
+        updateHome();
+    }
+
+    if (pageId === "ebook") {
+        if (currentChapter) {
+            renderReader();
+            renderChapterList();
+        } else {
+            renderChapterList();
+            showReaderMessage();
+        }
+    }
+
+    if (pageId === "summaries") {
+        renderSummaries();
+    }
+
+    if (pageId === "learn") {
+        renderLearningJourney();
+    }
+
+    if (pageId === "facts") {
+        renderFacts();
+    }
+
+    if (pageId === "map") {
+        renderMap();
+    }
+
+    if (pageId === "glossary") {
+        renderGlossary();
+    }
+
+    if (pageId === "search") {
+        runSearch();
+    }
+
+    if (pageId === "bookmarks") {
+        renderBookmarks();
+    }
+
+    if (pageId === "notes") {
+        renderNotes();
+    }
+
+    if (pageId === "progress") {
+        renderProgress();
+    }
+
+    if (pageId === "achievements") {
+        renderAchievements();
+    }
+
+    if (pageId === "profile") {
+        loadProfile();
+    }
+}
+
+function showToast(message) {
+    const toast = document.getElementById("toast");
+
+    toast.textContent = message;
+    toast.classList.add("show");
+
+    clearTimeout(showToast.timer);
+
+    showToast.timer = setTimeout(() => {
+        toast.classList.remove("show");
+    }, 2200);
+}
+
+/* =========================================================
+   DARK MODE
+   ========================================================= */
+
+function toggleDarkMode() {
+    state.darkMode = !state.darkMode;
+
+    applyDarkMode();
+    saveState();
+}
+
+function applyDarkMode() {
+    document.body.classList.toggle("dark", Boolean(state.darkMode));
+}
+
+/* =========================================================
+   HOME
+   ========================================================= */
+
+function updateHome() {
+    document.getElementById("homeXP").textContent = state.xp;
+    document.getElementById("homeLevel").textContent = state.level;
+    document.getElementById("homeStreak").textContent = state.streak;
+
+    const chapter = chapters[state.lastChapter] || chapters.ch2;
+
+    const progress = getReadingProgress(state.lastChapter);
+
+    document.getElementById("continueTitle").textContent = chapter.title;
+
+    document.getElementById("continueText").textContent =
+        "Page " + Math.min(
+            (state.reading[state.lastChapter]?.page || 0) + 1,
+            chapter.pages.length
+        ) + " of " + chapter.pages.length;
+
+    document.getElementById("continuePercent").textContent = progress + "%";
+    document.getElementById("continueBar").style.width = progress + "%";
+}
+
+function continueReading() {
+    const chapter = chapters[state.lastChapter] || chapters.ch2;
+
+    currentChapter = chapter.id;
+
+    currentReaderPage = Number(
+        state.reading[chapter.id]?.page || 0
+    );
+
+    if (currentReaderPage >= chapter.pages.length) {
+        currentReaderPage = chapter.pages.length - 1;
+    }
+
+    openPage("ebook");
+}
+
+/* =========================================================
+   E-BOOK
+   ========================================================= */
+
+function renderChapterList() {
+    const container = document.getElementById("chapterList");
+
+    container.innerHTML = "";
+
+    Object.values(chapters).forEach(chapter => {
+        const progress = getReadingProgress(chapter.id);
+        const isBookmarked = state.bookmarks.some(
+            bookmark =>
+                bookmark.chapterId === chapter.id &&
+                bookmark.page === 0
+        );
+
+        const card = document.createElement("div");
+        card.className = "card chapter-card";
+
+        card.innerHTML = `
+            <div class="subject">${escapeHTML(chapter.subject)}</div>
+            <h3>Chapter ${chapter.number}: ${escapeHTML(chapter.title)}</h3>
+            <p class="small">${chapter.pages.length} pages</p>
+
+            <div class="progress-wrap">
+                <div class="progress-label">
+                    <span>Progress</span>
+                    <span>${progress}%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width:${progress}%"></div>
+                </div>
+            </div>
+
+            <div class="chapter-actions">
+                <button class="btn" onclick="startChapter('${chapter.id}')">
+                    ${progress > 0 ? "Continue" : "Read Chapter"}
+                </button>
+
+                <button class="btn secondary" onclick="openSummary('${chapter.id}')">
+                    Summary
+                </button>
+            </div>
+        `;
+
+        container.appendChild(card);
+    });
+}
+function startChapter(
+    chapterId,
+    pageIndex = null
+) {
+    const chapter = chapters[chapterId];
+
+    if (!chapter) {
+        return;
+    }
+
+    currentChapter = chapterId;
+
+    if (pageIndex === null) {
+        currentReaderPage = Number(
+            state.reading[chapterId]?.page || 0
+        );
+    } else {
+        currentReaderPage = pageIndex;
+    }
+
+    if (
+        currentReaderPage < 0 ||
+        currentReaderPage >= chapter.pages.length
+    ) {
+        currentReaderPage = 0;
+    }
+
+    state.lastChapter = chapterId;
+    state.lastPage = currentReaderPage;
+
+    saveState();
+
+    openPage("ebook");
+
+    /*
+       Give the reader its own screen.
+       The chapter selection cards are hidden
+       while reading.
+    */
+
+    document.getElementById(
+        "chapterList"
+    ).style.display = "none";
+
+    renderReader();
+
+    setTimeout(() => {
+        document.getElementById(
+            "readerArea"
+        ).scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+    }, 100);
+}
+
+function showReaderMessage() {
+    const area = document.getElementById("readerArea");
+
+    area.innerHTML = `
+        <div class="card empty">
+            <div style="font-size:35px">📖</div>
+            <p>Select a chapter above to start reading.</p>
+        </div>
+    `;
+}
+
+function renderReader() {
+
+    const chapter =
+        chapters[currentChapter];
+
+    if (!chapter) {
+        showReaderMessage();
+        return;
+    }
+
+    if (currentReaderPage < 0) {
+        currentReaderPage = 0;
+    }
+
+    if (
+        currentReaderPage >=
+        chapter.pages.length
+    ) {
+        currentReaderPage =
+            chapter.pages.length - 1;
+    }
+
+    const page =
+        chapter.pages[currentReaderPage];
+
+    const progress =
+        getReadingProgress(
+            chapter.id
+        );
+
+    const bookmarked =
+        state.bookmarks.some(
+            bookmark =>
+                bookmark.chapterId ===
+                    chapter.id &&
+                bookmark.page ===
+                    currentReaderPage
+        );
+
+    const area =
+        document.getElementById(
+            "readerArea"
+        );
+
+    area.innerHTML = `
+        <div class="reader">
+
+            <div class="reader-head">
+
+                <button
+                    class="btn secondary"
+                    onclick="backToChapterList()"
+                >
+                    ← All Chapters
+                </button>
+
+                <br><br>
+
+                <h2>
+                    ${escapeHTML(
+                        chapter.title
+                    )}
+                </h2>
+
+                <p>
+                    ${escapeHTML(
+                        chapter.subject
+                    )}
+                    • Page
+                    ${currentReaderPage + 1}
+                    of
+                    ${chapter.pages.length}
+                </p>
+
+                <div class="progress-wrap">
+
+                    <div class="progress-label">
+                        <span>
+                            Reading Progress
+                        </span>
+
+                        <span>
+                            ${progress}%
+                        </span>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div
+                            class="progress-fill"
+                            style="width:${progress}%"
+                        ></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <article class="reader-body">
+
+                <h3>
+                    ${escapeHTML(
+                        page.title
+                    )}
+                </h3>
+
+                ${page.content}
+
+            </article>
+
+            <div class="reader-controls">
+
+                <button
+                    class="btn secondary"
+                    onclick="previousPage()"
+                    ${currentReaderPage === 0
+                        ? "disabled"
+                        : ""}
+                >
+                    ← Previous
+                </button>
+
+                <button
+                    class="btn ${
+                        bookmarked
+                            ? "orange"
+                            : ""
+                    }"
+                    onclick="toggleBookmark()"
+                >
+                    ${
+                        bookmarked
+                            ? "★ Saved"
+                            : "☆ Bookmark"
+                    }
+                </button>
+
+                <button
+                    class="btn"
+                    onclick="nextPage()"
+                >
+                    ${
+                        currentReaderPage ===
+                        chapter.pages.length - 1
+                            ? "Finish"
+                            : "Next →"
+                    }
+                </button>
+
+            </div>
+
+        </div>
+    `;
+
+    saveReadingProgress();
+}
+function backToChapterList() {
+
+    document.getElementById(
+        "chapterList"
+    ).style.display = "block";
+
+    currentChapter = null;
+
+    showReaderMessage();
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+function saveReadingProgress() {
+    if (!currentChapter) {
+        return;
+    }
+
+    const chapter = chapters[currentChapter];
+
+    const oldPage = Number(
+        state.reading[currentChapter]?.page ?? -1
+    );
+
+    const newPage = currentReaderPage;
+
+    if (oldPage === newPage) {
+        return;
+    }
+
+    state.reading[currentChapter] = {
+        page: newPage,
+        total: chapter.pages.length
+    };
+
+    state.lastChapter = currentChapter;
+    state.lastPage = currentReaderPage;
+
+    saveState();
+}
+
+function getReadingProgress(chapterId) {
+    const chapter = chapters[chapterId];
+
+    if (!chapter) {
+        return 0;
+    }
+
+    const record = state.reading[chapterId];
+
+    if (!record) {
+        return 0;
+    }
+
+    const page = Number(record.page || 0);
+
+    if (page >= chapter.pages.length - 1) {
+        return 100;
+    }
+
+    return Math.round(
+        ((page + 1) / chapter.pages.length) * 100
+    );
+}
+
+function previousPage() {
+    if (!currentChapter || currentReaderPage <= 0) {
+        return;
+    }
+
+    currentReaderPage--;
+
+    state.lastPage = currentReaderPage;
+
+    saveState();
+    renderReader();
+}
+
+function nextPage() {
+    const chapter = chapters[currentChapter];
+
+    if (!chapter) {
+        return;
+    }
+
+    if (currentReaderPage < chapter.pages.length - 1) {
+        currentReaderPage++;
+
+        state.lastChapter = currentChapter;
+        state.lastPage = currentReaderPage;
+
+        saveState();
+        renderReader();
+
+        return;
+    }
+
+    completeChapter(currentChapter);
+}
+
+function completeChapter(chapterId) {
+    const alreadyCompleted =
+        state.completedChapters.includes(chapterId);
+
+    state.reading[chapterId] = {
+        page: chapters[chapterId].pages.length - 1,
+        total: chapters[chapterId].pages.length
+    };
+
+    if (!alreadyCompleted) {
+        state.completedChapters.push(chapterId);
+        addXP(30, false);
+        showToast("Chapter completed! +30 XP 🏆");
+    } else {
+        saveState();
+        showToast("Chapter already completed.");
+    }
+
+    renderReader();
+    updateHome();
+}
+
+/* =========================================================
+   BOOKMARKS
+   ========================================================= */
+
+function toggleBookmark() {
+    if (!currentChapter) {
+        return;
+    }
+
+    const index = state.bookmarks.findIndex(
+        bookmark =>
+            bookmark.chapterId === currentChapter &&
+            bookmark.page === currentReaderPage
+    );
+
+    if (index >= 0) {
+        state.bookmarks.splice(index, 1);
+        showToast("Bookmark removed.");
+    } else {
+        state.bookmarks.push({
+            id: currentChapter + "-" + currentReaderPage,
+            chapterId: currentChapter,
+            page: currentReaderPage
+        });
+
+        showToast("Page bookmarked 🔖");
+    }
+
+    saveState();
+    renderReader();
+}
+
+function renderBookmarks() {
+    const container = document.getElementById("bookmarkList");
+
+    if (state.bookmarks.length === 0) {
+        container.innerHTML = `
+            <div class="card empty">
+                No bookmarks yet.
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = "";
+
+    state.bookmarks.forEach(bookmark => {
+        const chapter = chapters[bookmark.chapterId];
+
+        if (!chapter) {
+            return;
+        }
+
+        const page = chapter.pages[bookmark.page];
+
+        if (!page) {
+            return;
+        }
+
+        const card = document.createElement("div");
+        card.className = "card";
+        card.style.marginBottom = "10px";
+
+        card.innerHTML = `
+            <h3>${escapeHTML(chapter.title)}</h3>
+            <p class="small">
+                Page ${bookmark.page + 1}: ${escapeHTML(page.title)}
+            </p>
+
+            <br>
+
+            <button class="btn" onclick="openBookmark('${bookmark.chapterId}', ${bookmark.page})">
+                Open Page
+            </button>
+
+            <button class="btn red" onclick="removeBookmark('${bookmark.id}')">
+                Remove
+            </button>
+        `;
+
+        container.appendChild(card);
+    });
+}
+
+function openBookmark(chapterId, page) {
+    currentChapter = chapterId;
+    currentReaderPage = page;
+
+    openPage("ebook");
+}
+
+function removeBookmark(id) {
+    state.bookmarks = state.bookmarks.filter(
+        bookmark => bookmark.id !== id
+    );
+
+    saveState();
+    renderBookmarks();
+}
+
+/* =========================================================
+   SUMMARIES
+   ========================================================= */
+
+function renderSummaries() {
+    const container = document.getElementById("summaryList");
+
+    container.innerHTML = "";
+
+    Object.values(chapters).forEach(chapter => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.style.marginBottom = "12px";
+
+        card.innerHTML = `
+            <p class="small">${escapeHTML(chapter.subject)}</p>
+            <h3>${escapeHTML(chapter.title)}</h3>
+
+            <br>
+
+            <p>${escapeHTML(chapter.summary)}</p>
+
+            <br>
+
+            <button class="btn" onclick="openSummary('${chapter.id}')">
+                Read Chapter
+            </button>
+        `;
+
+        container.appendChild(card);
+    });
+}
+
+function openSummary(chapterId) {
+    const chapter = chapters[chapterId];
+
+    if (!chapter) {
+        return;
+    }
+
+    const container = document.getElementById("readerArea");
+
+    currentChapter = chapterId;
+    currentReaderPage = 0;
+
+    openPage("ebook");
+
+    container.innerHTML = `
+        <br>
+
+        <div class="card">
+            <p class="small">${escapeHTML(chapter.subject)}</p>
+            <h2 style="color:var(--red)">
+                ${escapeHTML(chapter.title)}
+            </h2>
+
+            <br>
+
+            <h3>Chapter Summary</h3>
+
+            <p>${escapeHTML(chapter.summary)}</p>
+
+            <br>
+
+            <button class="btn" onclick="startChapter('${chapterId}', 0)">
+                Start Reading
+            </button>
+        </div>
+    `;
+}
+
+/* =========================================================
+   LEARNING JOURNEY
+   ========================================================= */
+
+function renderLearningJourney() {
+    renderLessonGroup(
+        "geoLessons",
+        lessons.geography
+    );
+
+    renderLessonGroup(
+        "historyLessons",
+        lessons.history
+    );
+
+    renderLessonGroup(
+        "civicsLessons",
+        lessons.civics
+    );
+
+    renderLessonGroup(
+        "economicsLessons",
+        lessons.economics
+    );
+
+    const allLessons = [
+        ...lessons.geography,
+        ...lessons.history,
+        ...lessons.civics,
+        ...lessons.economics
+    ];
+
+    const completed = allLessons.filter(
+        lesson => state.completedLessons.includes(lesson.id)
+    ).length;
+
+    const percent = allLessons.length === 0
+        ? 0
+        : Math.round((completed / allLessons.length) * 100);
+
+    document.getElementById("learnOverall").textContent =
+        percent + "%";
+
+    document.getElementById("learnOverallBar").style.width =
+        percent + "%";
+}
+
+function renderLessonGroup(containerId, group) {
+    const container = document.getElementById(containerId);
+
+    container.innerHTML = "";
+
+    group.forEach((lesson, index) => {
+        const completed =
+            state.completedLessons.includes(lesson.id);
+
+        const previousLesson =
+            index > 0 ? group[index - 1] : null;
+
+        const unlocked =
+            index === 0 ||
+            state.completedLessons.includes(previousLesson.id);
+
+        const card = document.createElement("div");
+
+        card.className =
+            "card lesson" +
+            (completed ? " completed" : "") +
+            (!unlocked ? " locked" : "");
+
+        let status = "🔒 Locked";
+
+        if (completed) {
+            status = "✅ Completed";
+        } else if (unlocked) {
+            status = "▶️ Ready to learn";
+        }
+
+        card.innerHTML = `
+            <div style="font-size:25px">
+                ${completed ? "✅" : unlocked ? "🚀" : "🔒"}
+            </div>
+
+            <h3>${escapeHTML(lesson.title)}</h3>
+
+            <p class="small">
+                ${escapeHTML(lesson.description)}
+            </p>
+
+            <div class="lesson-status">
+                ${status} • +${lesson.xp} XP
+            </div>
+
+            <br>
+
+            <button
+                class="btn ${completed ? "green" : ""}"
+                onclick="completeLesson('${lesson.id}')"
+                ${(!unlocked || completed) ? "disabled" : ""}
+            >
+                ${completed ? "Completed" : "Start Lesson"}
+            </button>
+        `;
+
+        container.appendChild(card);
+    });
+}
+
+function findLesson(lessonId) {
+    for (const group of Object.values(lessons)) {
+        const found = group.find(
+            lesson => lesson.id === lessonId
+        );
+
+        if (found) {
+            return found;
+        }
+    }
+
+    return null;
+}
+
+function completeLesson(lessonId) {
+    const lesson = findLesson(lessonId);
+
+    if (!lesson) {
+        return;
+    }
+
+    if (state.completedLessons.includes(lessonId)) {
+        return;
+    }
+
+    const alreadyCompletedBefore =
+        state.completedLessons.includes(lessonId);
+
+    if (alreadyCompletedBefore) {
+        showToast("This lesson is already completed.");
+        return;
+    }
+
+    showLessonChallenge(lesson);
+}
+function showLessonChallenge(lesson) {
+
+    const challengeData = {
+
+        geo1: {
+            question: "India is located in which part of Asia?",
+            options: [
+                "South Asia",
+                "East Asia",
+                "Central Asia",
+                "West Asia"
+            ],
+            answer: "South Asia",
+            explanation:
+                "India is located in South Asia."
+        },
+
+        geo2: {
+            question: "Which mountain system lies in northern India?",
+            options: [
+                "Himalayas",
+                "Andes",
+                "Alps",
+                "Rockies"
+            ],
+            answer: "Himalayas",
+            explanation:
+                "The Himalayas form a major mountain system in northern India."
+        },
+
+        geo3: {
+            question: "Which island group lies in the Arabian Sea?",
+            options: [
+                "Lakshadweep",
+                "Andaman and Nicobar Islands",
+                "Maldives",
+                "Seychelles"
+            ],
+            answer: "Lakshadweep",
+            explanation:
+                "Lakshadweep is an Indian island group located in the Arabian Sea."
+        },
+
+        hist1: {
+            question:
+                "Why did European trading companies come to India?",
+            options: [
+                "Mainly for trade",
+                "To build Parliament",
+                "To study mountains",
+                "To create schools"
+            ],
+            answer: "Mainly for trade",
+            explanation:
+                "European trading companies came to India mainly in search of trade opportunities."
+        },
+
+        hist2: {
+            question:
+                "The English East India Company received its royal charter in which year?",
+            options: [
+                "1498",
+                "1600",
+                "1757",
+                "1857"
+            ],
+            answer: "1600",
+            explanation:
+                "The English East India Company received its royal charter in 1600."
+        },
+
+        hist3: {
+            question:
+                "The Battle of Plassey took place in which year?",
+            options: [
+                "1600",
+                "1757",
+                "1764",
+                "1857"
+            ],
+            answer: "1757",
+            explanation:
+                "The Battle of Plassey was fought in 1757."
+        },
+
+        hist4: {
+            question:
+                "Which areas were affected by colonial policies?",
+            options: [
+                "Only sports",
+                "Only festivals",
+                "Economy, society and administration",
+                "Only geography"
+            ],
+            answer:
+                "Economy, society and administration",
+            explanation:
+                "Colonial policies affected India's economy, society and administration."
+        },
+
+        civ1: {
+            question:
+                "In a democracy, citizens participate in choosing their ______.",
+            options: [
+                "Representatives",
+                "Mountains",
+                "Rivers",
+                "Factories"
+            ],
+            answer: "Representatives",
+            explanation:
+                "Citizens participate in democracy by choosing representatives."
+        },
+
+        civ2: {
+            question:
+                "Which of these is a component of the Parliament of India?",
+            options: [
+                "Lok Sabha",
+                "Supreme Court",
+                "Election Commission",
+                "Police"
+            ],
+            answer: "Lok Sabha",
+            explanation:
+                "The Parliament of India consists of the President, Lok Sabha and Rajya Sabha."
+        },
+
+        civ3: {
+            question:
+                "Which branch of government makes laws?",
+            options: [
+                "Executive",
+                "Legislature",
+                "Judiciary",
+                "Media"
+            ],
+            answer: "Legislature",
+            explanation:
+                "The legislature is the law-making branch of government."
+        },
+
+        eco1: {
+            question:
+                "Economics mainly studies how people use ______ resources.",
+            options: [
+                "Limited",
+                "Infinite",
+                "Imaginary",
+                "Non-existent"
+            ],
+            answer: "Limited",
+            explanation:
+                "Economics studies how people use limited resources to satisfy needs and wants."
+        },
+
+        eco2: {
+            question:
+                "Which of these is an example of a resource?",
+            options: [
+                "Water",
+                "Nothing",
+                "A thought",
+                "A question"
+            ],
+            answer: "Water",
+            explanation:
+                "Water is an important natural resource."
+        }
+    };
+
+    const challenge =
+        challengeData[lesson.id];
+
+    if (!challenge) {
+        showToast("Challenge coming soon.");
+        return;
+    }
+
+    const container =
+        document.getElementById("learn");
+
+    container.innerHTML = `
+        <h2 class="section-title">
+            🚀 ${escapeHTML(lesson.title)}
+        </h2>
+
+        <div class="card">
+            <p class="small">
+                SST Learning Challenge
+            </p>
+
+            <br>
+
+            <h3>
+                ${escapeHTML(challenge.question)}
+            </h3>
+
+            <br>
+
+            <div id="lessonChallengeOptions"></div>
+
+            <div id="lessonChallengeFeedback"
+                 style="margin-top:15px">
+            </div>
+        </div>
+
+        <br>
+
+        <button
+            class="btn secondary"
+            onclick="renderLearningJourney()"
+        >
+            ← Back to Learning Journey
+        </button>
+    `;
+
+    const optionsContainer =
+        document.getElementById(
+            "lessonChallengeOptions"
+        );
+
+    challenge.options.forEach(option => {
+
+        const button =
+            document.createElement("button");
+
+        button.className = "quiz-option";
+
+        button.textContent = option;
+
+        button.onclick = () => {
+            checkLessonChallenge(
+                lesson,
+                challenge,
+                option
+            );
+        };
+
+        optionsContainer.appendChild(button);
+    });
+}
+
+
+function checkLessonChallenge(
+    lesson,
+    challenge,
+    selectedAnswer
+) {
+
+    const buttons =
+        document.querySelectorAll(
+            "#lessonChallengeOptions .quiz-option"
+        );
+
+    buttons.forEach(button => {
+        button.disabled = true;
+
+        if (
+            button.textContent ===
+            challenge.answer
+        ) {
+            button.classList.add("correct");
+        }
+
+        if (
+            button.textContent ===
+            selectedAnswer &&
+            selectedAnswer !== challenge.answer
+        ) {
+            button.classList.add("wrong");
+        }
+    });
+
+    const feedback =
+        document.getElementById(
+            "lessonChallengeFeedback"
+        );
+
+    const correct =
+        selectedAnswer === challenge.answer;
+
+    if (!correct) {
+
+        feedback.innerHTML = `
+            <div class="info-box">
+                <strong>Not quite. ❌</strong>
+                <p>
+                    ${escapeHTML(challenge.explanation)}
+                </p>
+            </div>
+
+            <button
+                class="btn full"
+                onclick="showLessonChallenge(
+                    findLesson('${lesson.id}')
+                )"
+            >
+                Try Again
+            </button>
+        `;
+
+        return;
+    }
+
+    if (
+        state.completedLessons.includes(
+            lesson.id
+        )
+    ) {
+        feedback.innerHTML = `
+            <div class="fact-box">
+                <strong>Already completed! ✅</strong>
+            </div>
+        `;
+
+        return;
+    }
+
+    state.completedLessons.push(lesson.id);
+
+    addXP(lesson.xp, false);
+
+    saveState();
+
+    feedback.innerHTML = `
+        <div class="fact-box">
+            <strong>Correct! 🎉</strong>
+
+            <p>
+                ${escapeHTML(challenge.explanation)}
+            </p>
+
+            <p>
+                <strong>+${lesson.xp} XP</strong>
+            </p>
+        </div>
+
+        <button
+            class="btn green full"
+            onclick="renderLearningJourney()"
+        >
+            Continue Learning →
+        </button>
+    `;
+
+    showToast(
+        "Lesson completed! +" +
+        lesson.xp +
+        " XP 🚀"
+    );
+}
+
+/* =========================================================
+   XP / LEVEL
+   ========================================================= */
+
+function calculateLevel(xp) {
+    return Math.floor(xp / 100) + 1;
+}
+
+function addXP(amount, notify = true) {
+    const oldLevel = state.level;
+
+    state.xp += Number(amount) || 0;
+    state.level = calculateLevel(state.xp);
+
+    saveState();
+
+    if (notify && state.level > oldLevel) {
+        showToast("Level up! You reached Level " + state.level + " 🎉");
+    }
+}
+
+/* =========================================================
+   FACTS
+   ========================================================= */
+
+function renderFacts() {
+    const selected =
+        document.getElementById("factsChapter").value;
+
+    const list = facts[selected] || [];
+    const container = document.getElementById("factsList");
+
+    container.innerHTML = "";
+
+    list.forEach((fact, index) => {
+        const card = document.createElement("div");
+        card.className = "card fact";
+
+        card.innerHTML = `
+            <span class="fact-number">FACT ${index + 1}</span>
+            <p>${escapeHTML(fact)}</p>
+        `;
+
+        container.appendChild(card);
+    });
+}
+
+/* =========================================================
+   QUIZ
+   ========================================================= */
+
+function shuffle(array) {
+    const copy = [...array];
+
+    for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+
+    return copy;
+}
+
+function startQuiz() {
+    const chapter =
+        document.getElementById("quizChapter").value;
+
+    const count =
+        Number(document.getElementById("quizCount").value);
+
+    const type =
+        document.getElementById("quizType").value;
+
+    let pool = quizQuestions.filter(question => {
+        const chapterMatch =
+            chapter === "all" ||
+            question.chapter === chapter;
+
+        const typeMatch =
+            type === "mixed" ||
+            question.type === type;
+
+        return chapterMatch && typeMatch;
+    });
+
+    if (pool.length === 0) {
+        showToast("No questions available for this selection.");
+        return;
+    }
+
+    pool = shuffle(pool);
+
+    /*
+       If the requested count is larger than the available unique
+       questions, use every available unique question instead of
+       duplicating questions.
+    */
+    const selected = pool.slice(
+        0,
+        Math.min(count, pool.length)
+    );
+
+    quizSession = {
+        active: true,
+        questions: selected,
+        index: 0,
+        score: 0,
+        answered: false,
+        selectedAnswer: null
+    };
+
+    document.getElementById("quizSetup").style.display = "none";
+    document.getElementById("quizGame").style.display = "block";
+
+    renderQuizQuestion();
+}
+
+function renderQuizQuestion() {
+    if (!quizSession.active) {
+        return;
+    }
+
+    const question =
+        quizSession.questions[quizSession.index];
+
+    if (!question) {
+        finishQuiz();
+        return;
+    }
+
+    const total = quizSession.questions.length;
+    const number = quizSession.index + 1;
+
+    let answerHTML = "";
+
+    if (question.type === "fill") {
+        answerHTML = `
+            <input
+                id="fillAnswer"
+                class="input"
+                placeholder="Type your answer..."
+                autocomplete="off"
+            >
+            <br><br>
+
+            <button
+                class="btn full"
+                onclick="submitFillAnswer()"
+            >
+                Check Answer
+            </button>
+        `;
+    } else {
+        answerHTML = question.options
+            .map((option, index) => `
+                <button
+                    class="quiz-option"
+                    id="option-${index}"
+                    onclick="answerQuiz(${index})"
+                >
+                    ${escapeHTML(option)}
+                </button>
+            `)
+            .join("");
+    }
+
+    document.getElementById("quizGame").innerHTML = `
+        <div class="card quiz-progress">
+            <div class="progress-label">
+                <span>Question ${number} of ${total}</span>
+                <span>Score: ${quizSession.score}</span>
+            </div>
+
+            <div class="progress-bar">
+                <div
+                    class="progress-fill"
+                    style="width:${Math.round((number / total) * 100)}%"
+                ></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="quiz-question">
+                ${escapeHTML(question.question)}
+            </div>
+
+            ${answerHTML}
+
+            <div id="quizFeedback" style="margin-top:15px"></div>
+        </div>
+    `;
+
+    quizSession.answered = false;
+    quizSession.selectedAnswer = null;
+}
+
+function answerQuiz(index) {
+    if (quizSession.answered) {
+        return;
+    }
+
+    const question =
+        quizSession.questions[quizSession.index];
+
+    const selected =
+        question.options[index];
+
+    const correct =
+        selected === question.answer;
+
+    quizSession.answered = true;
+    quizSession.selectedAnswer = selected;
+
+    if (correct) {
+        quizSession.score++;
+    }
+
+    question.options.forEach((option, optionIndex) => {
+        const button =
+            document.getElementById("option-" + optionIndex);
+
+        if (!button) {
+            return;
+        }
+
+        button.disabled = true;
+
+        if (option === question.answer) {
+            button.classList.add("correct");
+        }
+
+        if (
+            optionIndex === index &&
+            !correct
+        ) {
+            button.classList.add("wrong");
+        }
+    });
+
+    showQuizFeedback(correct, question);
+}
+
+function submitFillAnswer() {
+    if (quizSession.answered) {
+        return;
+    }
+
+    const question =
+        quizSession.questions[quizSession.index];
+
+    const input =
+        document.getElementById("fillAnswer");
+
+    if (!input) {
+        return;
+    }
+
+    const userAnswer =
+        input.value.trim().toLowerCase();
+
+    if (!userAnswer) {
+        showToast("Please enter an answer.");
+        return;
+    }
+
+    const correctAnswer =
+        String(question.answer).trim().toLowerCase();
+
+    const correct =
+        userAnswer === correctAnswer;
+
+    quizSession.answered = true;
+
+    if (correct) {
+        quizSession.score++;
+    }
+
+    input.disabled = true;
+
+    showQuizFeedback(correct, question);
+}
+
+function showQuizFeedback(correct, question) {
+    const feedback =
+        document.getElementById("quizFeedback");
+
+    feedback.innerHTML = `
+        <div class="${correct ? "fact-box" : "info-box"}">
+            <strong>${correct ? "Correct! ✅" : "Not quite."}</strong>
+            <p>${escapeHTML(question.explanation)}</p>
+
+            ${
+                !correct
+                ? `<p><strong>Answer:</strong> ${escapeHTML(String(question.answer))}</p>`
+                : ""
+            }
+        </div>
+
+        <button
+            class="btn full"
+            onclick="nextQuizQuestion()"
+        >
+            ${
+                quizSession.index === quizSession.questions.length - 1
+                ? "Finish Quiz"
+                : "Next Question"
+            }
+        </button>
+    `;
+}
+
+function nextQuizQuestion() {
+    if (!quizSession.answered) {
+        return;
+    }
+
+    quizSession.index++;
+
+    if (
+        quizSession.index >=
+        quizSession.questions.length
+    ) {
+        finishQuiz();
+        return;
+    }
+
+    renderQuizQuestion();
+}
+
+function finishQuiz() {
+    const total = quizSession.questions.length;
+
+    const score = quizSession.score;
+
+    const percentage =
+        total === 0
+        ? 0
+        : Math.round((score / total) * 100);
+
+    state.quizzes++;
+
+    const earnedXP =
+        score * 5 + 10;
+
+    addXP(earnedXP, true);
+
+    saveState();
+
+    quizSession.active = false;
+
+    document.getElementById("quizGame").innerHTML = `
+        <div class="card result">
+            <div style="font-size:45px">🎉</div>
+
+            <h2>Quiz Complete!</h2>
+
+            <div class="result-score">
+                ${score}/${total}
+            </div>
+
+            <p>${percentage}%</p>
+
+            <br>
+
+            <p>
+                You earned <strong>${earnedXP} XP</strong>.
+            </p>
+
+            <br>
+
+            <button class="btn" onclick="resetQuizScreen()">
+                Create Another Quiz
+            </button>
+        </div>
+    `;
+
+    updateHome();
+}
+
+function resetQuizScreen() {
+    document.getElementById("quizSetup").style.display = "block";
+    document.getElementById("quizGame").style.display = "none";
+
+    quizSession = {
+        active: false,
+        questions: [],
+        index: 0,
+        score: 0,
+        answered: false,
+        selectedAnswer: null
+    };
+}
+
+/* =========================================================
+   MAP LAB
+   ========================================================= */
+
+function renderMap() {
+    const container =
+        document.getElementById("mapQuestion");
+
+    if (state.mapCompleted) {
+        container.innerHTML = `
+            <div class="card fact-box">
+                <h3>✅ Map Challenge Completed</h3>
+                <p>
+                    You have already completed the current Map Lab challenge.
+                </p>
+            </div>
+        `;
+
+        return;
+    }
+
+    container.innerHTML = `
+        <div class="card">
+            <h3>Map Challenge</h3>
+
+            <br>
+
+            <p>
+                Which battle was fought in Bengal in 1757?
+            </p>
+
+            <br>
+
+            <button
+                class="quiz-option"
+                onclick="mapAnswer('Plassey')"
+            >
+                Battle of Plassey
+            </button>
+
+            <button
+                class="quiz-option"
+                onclick="mapAnswer('Buxar')"
+            >
+                Battle of Buxar
+            </button>
+
+            <button
+                class="quiz-option"
+                onclick="mapAnswer('Panipat')"
+            >
+                Battle of Panipat
+            </button>
+        </div>
+    `;
+}
+
+function mapAnswer(answer) {
+    if (state.mapCompleted) {
+        return;
+    }
+
+    if (answer === "Plassey") {
+        state.mapCompleted = true;
+
+        addXP(15, true);
+        saveState();
+
+        renderMap();
+
+        showToast("Correct! +15 XP 🗺️");
+    } else {
+        showToast("Try again.");
+    }
+}
+
+/* =========================================================
+   GLOSSARY
+   ========================================================= */
+
+function renderGlossary() {
+    const search =
+        document.getElementById("glossarySearch")
+            .value
+            .trim()
+            .toLowerCase();
+
+    const container =
+        document.getElementById("glossaryList");
+
+    const filtered = glossary.filter(item => {
+        return (
+            item[0].toLowerCase().includes(search) ||
+            item[1].toLowerCase().includes(search)
+        );
+    });
+
+    if (filtered.length === 0) {
+        container.innerHTML = `
+            <div class="card empty">
+                No matching term found.
+            </div>
+        `;
+
+        return;
+    }
+
+    container.innerHTML = "";
+
+    filtered.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "card glossary-item";
+
+        card.innerHTML = `
+            <strong>${escapeHTML(item[0])}</strong>
+            <p>${escapeHTML(item[1])}</p>
+        `;
+
+        container.appendChild(card);
+    });
+}
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+
+function runSearch() {
+    const input =
+        document.getElementById("searchInput");
+
+    const container =
+        document.getElementById("searchResults");
+
+    if (!input || !container) {
+        return;
+    }
+
+    const query =
+        input.value.trim().toLowerCase();
+
+    if (!query) {
+        container.innerHTML = `
+            <div class="card empty">
+                Type something to search the e-book.
+            </div>
+        `;
+
+        return;
+    }
+
+    const results = [];
+
+    Object.values(chapters).forEach(chapter => {
+        chapter.pages.forEach((page, pageIndex) => {
+
+            const text =
+                stripHTML(page.content).toLowerCase();
+
+            const title =
+                page.title.toLowerCase();
+
+            if (
+                title.includes(query) ||
+                text.includes(query)
+            ) {
+                results.push({
+                    chapterId: chapter.id,
+                    chapterTitle: chapter.title,
+                    pageIndex,
+                    pageTitle: page.title
+                });
+            }
+        });
+    });
+
+    if (results.length === 0) {
+        container.innerHTML = `
+            <div class="card empty">
+                No results found.
+            </div>
+        `;
+
+        return;
+    }
+
+    container.innerHTML = "";
+
+    results.forEach(result => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.style.marginBottom = "10px";
+
+        card.innerHTML = `
+            <p class="small">${escapeHTML(result.chapterTitle)}</p>
+            <h3>${escapeHTML(result.pageTitle)}</h3>
+            <br>
+
+            <button
+                class="btn"
+                onclick="openSearchResult('${result.chapterId}', ${result.pageIndex})"
+            >
+                Open
+            </button>
+        `;
+
+        container.appendChild(card);
+    });
+}
+
+function openSearchResult(chapterId, pageIndex) {
+    startChapter(chapterId, pageIndex);
+}
+
+/* =========================================================
+   NOTES
+   ========================================================= */
+
+function savePersonalNote() {
+    const input =
+        document.getElementById("noteInput");
+
+    const text =
+        input.value.trim();
+
+    if (!text) {
+        showToast("Write something before saving.");
+        return;
+    }
+
+    state.notes.unshift({
+        id: Date.now().toString(),
+        text,
+        date: new Date().toLocaleString()
+    });
+
+    input.value = "";
+
+    saveState();
+    renderNotes();
+
+    showToast("Note saved 🗒️");
+}
+
+function renderNotes() {
+    const container =
+        document.getElementById("notesList");
+
+    if (state.notes.length === 0) {
+        container.innerHTML = `
+            <div class="card empty">
+                You have no personal notes yet.
+            </div>
+        `;
+
+        return;
+    }
+
+    container.innerHTML = "";
+
+    state.notes.forEach(note => {
+        const card = document.createElement("div");
+        card.className = "card note-item";
+
+        card.innerHTML = `
+            <p>${escapeHTML(note.text)}</p>
+            <div class="note-date">
+                ${escapeHTML(note.date)}
+            </div>
+
+            <br>
+
+            <button
+                class="btn red"
+                onclick="deleteNote('${note.id}')"
+            >
+                Delete
+            </button>
+        `;
+
+        container.appendChild(card);
+    });
+}
+
+function deleteNote(id) {
+    state.notes = state.notes.filter(
+        note => note.id !== id
+    );
+
+    saveState();
+    renderNotes();
+
+    showToast("Note deleted.");
+}
+
+/* =========================================================
+   PROGRESS
+   ========================================================= */
+
+function renderProgress() {
+    const currentLevelStart =
+        (state.level - 1) * 100;
+
+    const currentLevelXP =
+        state.xp - currentLevelStart;
+
+    const levelPercent =
+        Math.min(
+            100,
+            Math.round((currentLevelXP / 100) * 100)
+        );
+
+    document.getElementById("progressXPText").textContent =
+        state.xp + " total XP";
+
+    document.getElementById("levelProgressText").textContent =
+        currentLevelXP + " / 100 XP";
+
+    document.getElementById("levelProgressBar").style.width =
+        levelPercent + "%";
+
+    document.getElementById("quizAttemptsText").textContent =
+        state.quizzes + " completed quiz attempt" +
+        (state.quizzes === 1 ? "" : "s");
+
+    const container =
+        document.getElementById("readingProgressList");
+
+    container.innerHTML = "";
+
+    Object.values(chapters).forEach(chapter => {
+        const progress =
+            getReadingProgress(chapter.id);
+
+        const div = document.createElement("div");
+
+        div.style.marginBottom = "15px";
+
+        div.innerHTML = `
+            <div class="progress-label">
+                <span>${escapeHTML(chapter.title)}</span>
+                <span>${progress}%</span>
+            </div>
+
+            <div class="progress-bar">
+                <div
+                    class="progress-fill"
+                    style="width:${progress}%"
+                ></div>
+            </div>
+        `;
+
+        container.appendChild(div);
+    });
+}
+
+/* =========================================================
+   ACHIEVEMENTS
+   ========================================================= */
+
+function renderAchievements() {
+    const container =
+        document.getElementById("achievementList");
+
+    container.innerHTML = "";
+
+    achievements.forEach(achievement => {
+        const unlocked = achievement.check();
+
+        const card = document.createElement("div");
+
+        card.className =
+            "card achievement" +
+            (unlocked ? "" : " locked");
+
+        card.style.marginBottom = "10px";
+
+        card.innerHTML = `
+            <div class="badge-icon">
+                ${achievement.icon}
+            </div>
+
+            <div>
+                <h3>${escapeHTML(achievement.title)}</h3>
+
+                <p class="small">
+                    ${escapeHTML(achievement.description)}
+                </p>
+
+                <p class="small">
+                    ${unlocked ? "Unlocked ✅" : "Locked 🔒"}
+                </p>
+            </div>
+        `;
+
+        container.appendChild(card);
+    });
+}
+
+/* =========================================================
+   PROFILE
+   ========================================================= */
+
+function loadProfile() {
+    const nameInput =
+        document.getElementById("profileName");
+
+    const classInput =
+        document.getElementById("profileClass");
+
+    nameInput.value =
+        state.profile.name || "";
+
+    classInput.value =
+        state.profile.className || "";
+
+    updateAvatar();
+}
+
+function saveProfile() {
+    const name =
+        document.getElementById("profileName")
+            .value
+            .trim();
+
+    const className =
+        document.getElementById("profileClass")
+            .value
+            .trim();
+
+    state.profile.name = name;
+    state.profile.className = className;
+
+    saveState();
+    updateAvatar();
+
+    showToast("Profile saved.");
+}
+
+function updateAvatar() {
+    const avatar =
+        document.getElementById("profileAvatar");
+
+    if (!avatar) {
+        return;
+    }
+
+    const name =
+        state.profile.name || "A";
+
+    avatar.textContent =
+        name.charAt(0).toUpperCase();
+}
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+function resetProgress() {
+    const confirmed =
+        confirm(
+            "Reset all A-LearnSST progress, bookmarks and notes?"
+        );
+
+    if (!confirmed) {
+        return;
+    }
+
+    state = safeClone(DEFAULT_STATE);
+
+    currentChapter = null;
+    currentReaderPage = 0;
+
+    saveState();
+    applyDarkMode();
+
+    renderPage(currentPage);
+
+    updateHome();
+
+    showToast("All progress has been reset.");
+}
+
+/* =========================================================
+   SECURITY / TEXT HELPERS
+   ========================================================= */
+
+function escapeHTML(value) {
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+function stripHTML(html) {
+    const temporary =
+        document.createElement("div");
+
+    temporary.innerHTML = html;
+
+    return temporary.textContent || temporary.innerText || "";
+}
+
+/* =========================================================
+   INITIALIZATION
+   ========================================================= */
+
+function initializeApp() {
+    applyDarkMode();
+
+    updateHome();
+
+    renderChapterList();
+    renderSummaries();
+    renderLearningJourney();
+    renderFacts();
+    renderMap();
+    renderGlossary();
+    renderBookmarks();
+    renderNotes();
+    renderProgress();
+    renderAchievements();
+    loadProfile();
+
+    showReaderMessage();
+
+    document.getElementById("quizSetup").style.display = "block";
+    document.getElementById("quizGame").style.display = "none";
+}
+
+/* Start application */
+initializeApp();
+
+</script>
+
+</body>
+</html>
